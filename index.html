@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Backbone/Marionette basic setup with nested views</title>
+        <style type="text/css" src="css/dict_display.css"></style>
+	<style type="text/css" src="css/textbox.css"></style>
+    </head>
+    <body>
+        <!-- Base element for app -->
+        <!--
+            Dont use the BODY element as the base because when the app renders in the BODY
+            it will wipe out the template files before the views can pick them up 
+        -->
+        <div id="AppBase"></div>
+ 
+        <!-- TEMPLATES -->
+	<!-- HTML for SEARCH BAR -->
+	<div id="tfheader">
+		<div id="textbox_mode">
+			<input type="radio" name="mode" value="search" onclick="changeTextboxMode(value);">Search
+			<input type="radio" name="mode" value="delete" onclick="changeTextboxMode(value);">Delete
+			<input type="radio" name="mode" value="add" onclick="changeTextboxMode(value);">Add
+		</div>
+		<form id="textbox" method="get">
+		        <input type="text" class="tftextinput" name="q" size="25" maxlength="120">
+			<input type="submit" class="tfbutton" value="------" size="56px" id="textbox_value">
+		</form>
+	<div class="tfclear"></div>
+	</div>
+	<!-- Textbox js -->
+	<script type="text/javascript" src="js/textbox.js"></script>
+        <!-- main layout template -->
+        <script type="text/template" id="layout-template">
+            <h1>Dictionary</h1>
+            <div id="regionOne"></div>
+        </script>
+ 
+        <!-- dictItemView template -->
+        <!-- This used the Underscore templating system, which is built into Marionette.js -->
+        <script type="text/template" id="itemView-template">
+            <span><b>Word</b>: <%- word %></span><br/>
+            <span><b>Definition</b>: <%- def %></span>
+        </script>
+ 
+        <!-- libraries -->
+        <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+        <script type="text/javascript" src="js/underscore.js"></script>
+        <script type="text/javascript" src="js/backbone.js"></script>
+        <script type="text/javascript" src="js/backbone.marionette.js"></script>
+ 
+        <!-- app code -->
+        <script type="text/javascript" src="js/script.js"></script>
+    </body>
+</html>
