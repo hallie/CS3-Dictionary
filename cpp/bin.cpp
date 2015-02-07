@@ -16,8 +16,7 @@ int main() {
         new_word.summary = hold.substr(hold.find(":")+1);
         new_word.definition = "";
 
-        //while (!dict.eof()) {
-        for(int i = 0; i < 10; i++) {
+        while (!dict.eof()) {
 	    getline(dict, hold);
             if (hold[0] == 'd') {
 	        new_word.definition += (hold.substr(hold.find(":")+1) + "\n");

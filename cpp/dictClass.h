@@ -27,18 +27,20 @@ class dictType {
 };
 
 dictType::dictType() {
-    node* root = NULL;
+    root = NULL;
 }
 
 void dictType::addEntry(dictEntry e) {
-    if (root != NULL) {
-	addEntry(e, root);
-    }
-    else {
-	root = new node;
+    if (root == NULL) {
+	std::cout << "Setting root to " << e.word << std::endl;
+        root = new node;
         root->info = e;
         root->left = NULL;
         root->right = NULL;
+    }
+    else {
+	std::cout << "adding " << e.word << std::endl;
+        addEntry(e, root);
     }
 }
 
