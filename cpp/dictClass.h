@@ -3,6 +3,7 @@
 
 struct dictEntry {
     std::string word;
+    std::string summary;
     std::string definition;
 };
 
