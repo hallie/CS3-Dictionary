@@ -13,7 +13,7 @@ int main() {
         getline(dict, hold);
         new_word.word = hold.substr(hold.find(":")+1);
         getline(dict, hold);
-        new_word.summary = hold.substr(hold.find(":")+1);
+        new_word.pronunciation = hold.substr(hold.find(":")+1);
         new_word.definition = "";
 
         while (!dict.eof()) {
@@ -25,16 +25,19 @@ int main() {
 	        dictionary.addEntry(new_word);
 	        new_word.word = hold.substr(hold.find(":")+1);
                 getline(dict, hold);
-                new_word.summary = hold.substr(hold.find(":")+1);
+                new_word.pronunciation = hold.substr(hold.find(":")+1);
 	        new_word.definition = "";
 	    }
         }
 
-	std::cout << new_word.word << std::endl << new_word.summary << std::endl << new_word.definition << std::endl;
+	//std::cout << new_word.word << std::endl << new_word.pronunciation << std::endl << new_word.definition << std::endl;
 	dict.close();
     }
     else {
 	std::cout << "File not found\n";
     }
+
+    dictionary.findEntry("LEADSMAN");
+
     return 0;
 }

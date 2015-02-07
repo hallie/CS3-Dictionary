@@ -1,29 +1,30 @@
 #include <string>
 #include <iostream>
 
-struct dictEntry {
-    std::string word;
-    std::string summary;
-    std::string definition;
+struct dictEntry {		//Creating a type to hold dictionary entries
+    std::string word;		//  The dictionary word
+    std::string pronunciation;	//  The pronunciation
+    std::string definition;	//  The definition
 };
 
-struct node {
-    dictEntry info;
-    node* left;
-    node* right;
+struct node {			//Creating the node type
+    dictEntry info;		//  Holds the dictionary entry
+    node* left;			//  The left child of the entry
+    node* right;		//  The right child of the entry
 };
 
-class dictType {
+class dictType {		//Creating a class to hold all of the entries
     private:
-	node* root;
-        void addEntry(dictEntry e, node* leaf);
-
+	node* root;				//The root of the tree
+        void addEntry(node* e, node* leaf);	//The recursive function for
+						//  adding to the tree
+	node* findEntry(std::string word, node* leaf);
+        void print(node* leaf);
     public:
         dictType();
-        void addEntry(dictEntry e);
-	void deleteEntry(std::string word);
-	void findEntry(std::string word, node* leaf);
-        void print(node* leaf);
+        void addEntry(dictEntry e);		//Calls to add entry from main
+	void deleteEntry(std::string word);	//Calls to delete from main
+	void findEntry(std::string word); 	//Calls find from main
 };
 
 dictType::dictType() {
@@ -32,28 +33,29 @@ dictType::dictType() {
 
 void dictType::addEntry(dictEntry e) {
     if (root == NULL) {
-	std::cout << "Setting root to " << e.word << std::endl;
+	//std::cout << "Setting root to " << e.word << std::endl;
         root = new node;
         root->info = e;
         root->left = NULL;
         root->right = NULL;
     }
     else {
-	std::cout << "adding " << e.word << std::endl;
-        addEntry(e, root);
+	//std::cout << "adding " << e.word << std::endl;
+        node* entry = new node;
+        entry->info = e;
+        entry->left = NULL;
+        entry->right = NULL;
+        addEntry(entry, root);
     }
 }
 
-void dictType::addEntry(dictEntry e, node* leaf) {
-    if (e.word < leaf->info.word) {
+void dictType::addEntry(node* e, node* leaf) {
+    if (e->info.word < leaf->info.word) {
         if (leaf->left != NULL) {
             addEntry(e, leaf->left);
         }
         else {
-            leaf->left = new node;
-	    leaf->left->info = e;
-	    leaf->left->left = NULL;
-	    leaf->left->right = NULL;
+            leaf->left = e;
 	}
     }
     else {
@@ -61,31 +63,54 @@ void dictType::addEntry(dictEntry e, node* leaf) {
             addEntry(e, leaf->right);
 	}
 	else {
-	    leaf->right = new node;
-	    leaf->right->info = e;
-	    leaf->right->left = NULL;
-	    leaf->right->right = NULL;
+	    leaf->right = e;
 	}
     }
 }
 
-void dictType::deleteEntry(std::string word) {}
+void dictType::deleteEntry(std::string word) {
+    node* hold;
+    hold = findEntry(word, root);
+    if (hold->left != NULL) {
+	addEntry(hold->left, root);
+    }
+    if (hold->right != NULL) {
+	addEntry(hold->right, root);
+    }
+    delete hold;
+}
 
-void dictType::findEntry(std::string word, node* leaf) {
-    if (leaf != NULL) {
-	if (word == leaf->info.word) {
-	    print(leaf);
+void dictType::findEntry(std::string word) {
+    if (root != NULL) {
+        node* entry = new node;
+	entry = findEntry(word, root);
+        if (entry != NULL) {
+	    print(entry);
 	}
-	else if (word < leaf->info.word) {
-	    findEntry(word, leaf->left);
-	}
-	else {
-	    findEntry(word, leaf->right);
+        else {
+	    std::cout << "Word Not Found\n";
 	}
     }
     else {
-	std::cout << "Word not found";
+        std::cout << "Word Not Found\n";
     }
+}
+
+node* dictType::findEntry(std::string word, node* leaf) {
+    if (leaf != NULL) {
+	if (word == leaf->info.word) {
+	    print(leaf);
+	    return leaf;
+	}
+	else if (word < leaf->info.word) {
+	    return findEntry(word, leaf->left);
+	}
+	else {
+	    return findEntry(word, leaf->right);
+	}
+    }
+    std::cout << "Word Not Found\n";
+    return NULL;
 }
 
 void dictType::print(node* leaf) {
