@@ -1,14 +1,13 @@
 #include "dictClass.h"
 #include <fstream>
-using namespace std;
 
 int main() {
-    ifstream dict;
+    std::ifstream dict;
     dict.open("Dictionary/Dictionary.txt");
 
     dictType dictionary;
     dictEntry new_word;
-    string hold;
+    std::string hold;
 
     if (dict.is_open()) {
         getline(dict, hold);
@@ -32,11 +31,11 @@ int main() {
 	    }
         }
 
-	cout << new_word.word << endl << new_word.summary << endl << new_word.definition << endl;
+	std::cout << new_word.word << std::endl << new_word.summary << std::endl << new_word.definition << std::endl;
 	dict.close();
     }
     else {
-	cout << "File not found\n";
+	std::cout << "File not found\n";
     }
     return 0;
 }
