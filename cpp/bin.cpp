@@ -1,7 +1,49 @@
 #include "dictClass.h"
 #include <fstream>
 
+dictType fillDictionary();
+
 int main() {
+    dictType dictionary = fillDictionary();
+    bool valid = true;
+    char instruction;
+    std::string word;
+    dictEntry entry;
+    std::cout << "Dictionay has been built\n";
+    do {
+        std::cout << "What would you like to do now?\n"
+                  << "\t(a) Search Word\n"
+                  << "\t(b) Add Entry\n"
+		  << "\t(c) Delete Entry\n";
+	std::cin >> instruction;
+	switch(instruction) {
+	    case 'a':     std::cout << "Search Word: ";
+			  std::cin >> word;
+			  dictionary.findEntry(word);
+			  break;
+	    case 'b':	  std::cout << "Add Word: ";
+			  std::cin >> entry.word;
+			  std::cout << "Add Pronunciation: ";
+			  std::cin >> entry.pronunciation;
+			  std::cout << "Add Definition: ";
+			  std::cin >> entry.definition;
+			  dictionary.addEntry(entry);
+			  break;
+	    case 'c':	  std::cout << "Delete Entry: ";
+			  std::cin >> word;
+			  dictionary.deleteEntry(word);
+			  break;
+            default:	  valid = false;
+			  break;
+	}
+
+    } while (valid);
+
+    return 0;
+}
+
+
+dictType fillDictionary() {
     std::ifstream dict;
     dict.open("Dictionary/Dictionary.txt");
 
@@ -37,7 +79,5 @@ int main() {
 	std::cout << "File not found\n";
     }
 
-    dictionary.findEntry("LEADSMAN");
-
-    return 0;
+    return dictionary;
 }

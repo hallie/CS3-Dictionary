@@ -9,17 +9,17 @@ struct dictEntry {		//Creating a type to hold dictionary entries
 
 struct node {			//Creating the node type
     dictEntry info;		//  Holds the dictionary entry
-    node* left;			//  The left child of the entry
-    node* right;		//  The right child of the entry
+    node *left;			//  The left child of the entry
+    node *right;		//  The right child of the entry
 };
 
 class dictType {		//Creating a class to hold all of the entries
     private:
-	node* root;				//The root of the tree
-        void addEntry(node* e, node* leaf);	//The recursive function for
+	node *root;				//The root of the tree
+        void addEntry(node *e, node *leaf);	//The recursive function for
 						//  adding to the tree
-	node* findEntry(std::string word, node* leaf);
-        void print(node* leaf);
+	node *findEntry(std::string word, node *leaf);
+        void print(node *leaf);
     public:
         dictType();
         void addEntry(dictEntry e);		//Calls to add entry from main
@@ -28,20 +28,18 @@ class dictType {		//Creating a class to hold all of the entries
 };
 
 dictType::dictType() {
-    root = NULL;
+    root = NULL;	//Sets the root to NULL upon initialization
 }
 
 void dictType::addEntry(dictEntry e) {
     if (root == NULL) {
-	//std::cout << "Setting root to " << e.word << std::endl;
         root = new node;
         root->info = e;
         root->left = NULL;
         root->right = NULL;
     }
     else {
-	//std::cout << "adding " << e.word << std::endl;
-        node* entry = new node;
+        node *entry = new node;
         entry->info = e;
         entry->left = NULL;
         entry->right = NULL;
@@ -49,13 +47,13 @@ void dictType::addEntry(dictEntry e) {
     }
 }
 
-void dictType::addEntry(node* e, node* leaf) {
+void dictType::addEntry(node *e, node *leaf) {
     if (e->info.word < leaf->info.word) {
         if (leaf->left != NULL) {
             addEntry(e, leaf->left);
         }
         else {
-            leaf->left = e;
+	    leaf->left = e;
 	}
     }
     else {
@@ -69,12 +67,14 @@ void dictType::addEntry(node* e, node* leaf) {
 }
 
 void dictType::deleteEntry(std::string word) {
-    node* hold;
+    node *hold;
     hold = findEntry(word, root);
     if (hold->left != NULL) {
+        print(hold->left);
 	addEntry(hold->left, root);
     }
     if (hold->right != NULL) {
+	print(hold->right);
 	addEntry(hold->right, root);
     }
     delete hold;
@@ -82,7 +82,7 @@ void dictType::deleteEntry(std::string word) {
 
 void dictType::findEntry(std::string word) {
     if (root != NULL) {
-        node* entry = new node;
+        node *entry = new node;
 	entry = findEntry(word, root);
         if (entry != NULL) {
 	    print(entry);
@@ -96,7 +96,7 @@ void dictType::findEntry(std::string word) {
     }
 }
 
-node* dictType::findEntry(std::string word, node* leaf) {
+node* dictType::findEntry(std::string word, node *leaf) {
     if (leaf != NULL) {
 	if (word == leaf->info.word) {
 	    print(leaf);
@@ -113,7 +113,14 @@ node* dictType::findEntry(std::string word, node* leaf) {
     return NULL;
 }
 
-void dictType::print(node* leaf) {
+void dictType::print(node *leaf) {
     std::cout << leaf->info.word << std::endl;
-    std::cout << leaf->info.definition;
+    std::cout << leaf->info.definition << std:: endl;
+
+    std::cout << "Left Branch: ";
+    if (leaf->left != NULL) { std::cout << leaf->left->info.word << std::endl; }
+    else { std::cout << "NULL\n"; }
+    std::cout << "Right Branch: ";
+    if (leaf->right != NULL) { std::cout << leaf->right->info.word << std::endl; }
+    else { std::cout << "NULL\n"; }
 }

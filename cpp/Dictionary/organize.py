@@ -46,7 +46,7 @@ for line in f:
             dic[word].append(line)
 f.close()
 
-for i in range(len(words)/2):
+for i in range(len(words)/4):
     n.write("word:" + words[i])
     for j in dic[words[i]]:
         n.write("defn:" + j)
