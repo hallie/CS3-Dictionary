@@ -1,3 +1,7 @@
+/**
+ * Header file for the dictionary tree class.
+ **/
+
 #include <string>
 #include <iostream>
 
@@ -31,6 +35,11 @@ dictType::dictType() {
     root = NULL;	//Sets the root to NULL upon initialization
 }
 
+/**
+ * [ Public ] Makes the entry a new node at the root if the root is
+ *   currently NULL. Otherwise, it turns it into a node and passes
+ *   it into the private function along with the root.
+ **/
 void dictType::addEntry(dictEntry e) {
     if (root == NULL) {
         root = new node;
@@ -47,6 +56,10 @@ void dictType::addEntry(dictEntry e) {
     }
 }
 
+/**
+ * [ Private ] Adds a node to a leaf. Calls itself recursively until
+ *   the right position is found.
+ **/
 void dictType::addEntry(node *e, node *leaf) {
     if (e->info.word < leaf->info.word) {
         if (leaf->left != NULL) {
@@ -66,36 +79,47 @@ void dictType::addEntry(node *e, node *leaf) {
     }
 }
 
+/**
+ * [ Public ] Finds the word using the find function, and then re-adds its
+ *   leaf nodes to the dictionary tree if they exist. Deletes entry.
+ **/
 void dictType::deleteEntry(std::string word) {
     node *hold;
     hold = findEntry(word, root);
-    if (hold->left != NULL) {
-        print(hold->left);
-	addEntry(hold->left, root);
+    if (hold != NULL) {
+        if (hold->left != NULL) {
+            print(hold->left);
+	    addEntry(hold->left, root);
+        }
+        if (hold->right != NULL) {
+	    print(hold->right);
+	    addEntry(hold->right, root);
+        }
+	std::cout << hold->info.word << " has been deleted.\n";
+        delete hold;
     }
-    if (hold->right != NULL) {
-	print(hold->right);
-	addEntry(hold->right, root);
-    }
-    delete hold;
 }
 
+/**
+ * [ Public ] Function for finding an entry. Calls the private
+ *   version of the function if the root of the dictionary
+ *   tree isn't NULL.
+ **/
 void dictType::findEntry(std::string word) {
     if (root != NULL) {
-        node *entry = new node;
-	entry = findEntry(word, root);
-        if (entry != NULL) {
-	    print(entry);
-	}
-        else {
-	    std::cout << "Word Not Found\n";
-	}
+	findEntry(word, root);
     }
     else {
         std::cout << "Word Not Found\n";
     }
 }
 
+/**
+ * [ Private ] Function for finding an entry using a leaf node.
+ * Recursively calls itself using the left or right leaf of the
+ *   current leaf, depending on the relative value of the search
+ *   word.
+ **/
 node* dictType::findEntry(std::string word, node *leaf) {
     if (leaf != NULL) {
 	if (word == leaf->info.word) {
@@ -113,6 +137,9 @@ node* dictType::findEntry(std::string word, node *leaf) {
     return NULL;
 }
 
+/**
+ * Function for printing the contents of an entry.
+ **/
 void dictType::print(node *leaf) {
     std::cout << leaf->info.word << std::endl;
     std::cout << leaf->info.definition << std:: endl;

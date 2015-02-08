@@ -87,7 +87,7 @@ dictType fillDictionary() {
 	    //  current entry's definition.
 	    getline(dict, hold);
             if (hold[0] == 'd') {
-	        new_word.definition += (hold.substr(hold.find(":")+1) + "\n");
+	        new_word.definition += ('\t' + hold.substr(hold.find(":")+1) + "\n");
 	    }
 	    //If not a 'd', it must be a new word. So we add that now complete
 	    //  entry to the dictionary tree, and begin a new one.

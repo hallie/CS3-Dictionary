@@ -34,7 +34,7 @@ Initially, I simply rewrote this entire thing to my new text file, but
 dic = {}
 words = []
 for line in f:
-    match = re.match("([A-Z]{1,}[\n])", line)
+    match = re.match("([^a-z0-9]{1,}[\n])", line)
     if(bool(match)):
         if (len(match.group(1)) == len(line)):
            if (not (match.group(1) in dic)):
