@@ -23,12 +23,15 @@ class dictType {		//Creating a class to hold all of the entries
         void addEntry(node *e, node *leaf);	//The recursive function for
 						//  adding to the tree
 	node *findEntry(std::string word, node *leaf);
+        node *deleteEntry(std::string word, node *leaf);
         void print(node *leaf);
     public:
         dictType();
         void addEntry(dictEntry e);		//Calls to add entry from main
 	void deleteEntry(std::string word);	//Calls to delete from main
 	void findEntry(std::string word); 	//Calls find from main
+        void getLast();				//Retrieves last entry in dict
+	void getFirst();			//Retrieves first entry in dict
 };
 
 dictType::dictType() {
@@ -85,19 +88,37 @@ void dictType::addEntry(node *e, node *leaf) {
  **/
 void dictType::deleteEntry(std::string word) {
     node *hold;
-    hold = findEntry(word, root);
+    hold = deleteEntry(word, root);
     if (hold != NULL) {
         if (hold->left != NULL) {
-            print(hold->left);
+            //print(hold->left);
 	    addEntry(hold->left, root);
         }
         if (hold->right != NULL) {
-	    print(hold->right);
+	    //print(hold->right);
 	    addEntry(hold->right, root);
         }
 	std::cout << hold->info.word << " has been deleted.\n";
-        delete hold;
     }
+}
+
+node *dictType::deleteEntry(std::string word, node *leaf) {
+    node *hold;
+    if (leaf != NULL) {
+        if (word == leaf->info.word) {
+	    hold = leaf;
+	    delete leaf;
+            return hold;
+        }
+        else if (word < leaf->info.word) {
+            return deleteEntry(word, leaf->left);
+        }
+        else {
+            return deleteEntry(word, leaf->right);
+        }
+    }
+    std::cout << "Word Not Found\n";
+    return NULL;
 }
 
 /**
@@ -138,10 +159,29 @@ node* dictType::findEntry(std::string word, node *leaf) {
 }
 
 /**
+ * [ Public ] Gets the most left entry in the tree (the last, alphabetically).
+ **/
+void dictType::getLast() {
+    node *current;
+    for (current = root; current->right != NULL; current = current->right);
+    std::cout << "The last word in this dictionary is " << current->info.word << std::endl;
+}
+
+/**
+ * [ Public ] Gets the most right entry in the tree (the first, alphabetically).
+ **/
+void dictType::getFirst() {
+    node *current;
+    for (current = root; current->left != NULL; current = current->left);
+    std::cout << "The first word in this dictionary is " << current->info.word << std::endl;
+}
+
+/**
  * Function for printing the contents of an entry.
  **/
 void dictType::print(node *leaf) {
     std::cout << leaf->info.word << std::endl;
+    std::cout << leaf->info.pronunciation << std::endl;
     std::cout << leaf->info.definition << std:: endl;
 
     std::cout << "Left Branch: ";

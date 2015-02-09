@@ -12,14 +12,14 @@ int main() {
     dictEntry entry;			      //An entry for holding commands
 
     std::cout
-<<"******************************************************************\n"
-<<"* ________  .__        __  .__                                   *\n"
-<<"* \\______ \\ |__| _____/  |_|__| ____   ____ _____ _______ ___.__.*\n"
-<<"*  |    |  \\|  |/ ___\\   __\\  |/  _ \\ /    \\\\__  \\\\_  __ <   |  |*\n"
-<<"*  |    `   \\  \\  \\___|  | |  (  <_> )   |  \\/ __ \\|  | \\/\\___  |*\n"
-<<"* /_______  /__|\\___  >__| |__|\\____/|___|  (____  /__|   / ____|*\n"
-<<"*         \\/        \\/                    \\/     \\/       \\/     *\n"
-<<"******************************************************************\n";
+<<"************************************************************************\n"
+<<"* ________  .__        __  .__                                         *\n"
+<<"* \\______ \\ |__| _____/  |_|__| ____   ____ _____ _______ ___.__.      *\n"
+<<"*  |    |  \\|  |/ ___\\   __\\  |/  _ \\ /    \\\\__  \\\\_  __ <   |  |      *\n"
+<<"*  |    `   \\  \\  \\___|  | |  (  <_> )   |  \\/ __ \\|  | \\/\\___  |      *\n"
+<<"* /_______  /__|\\___  >__| |__|\\____/|___|  (____  /__|   / ____|      *\n"
+<<"*         \\/        \\/                    \\/     \\/       \\/           *\n"
+<<"************************************************************************\n";
 
 
     do {
@@ -27,7 +27,9 @@ int main() {
         std::cout << "\nWhat would you like to do now?\n"
                   << "\t(a) Search Word\n"
                   << "\t(b) Add Entry\n"
-		  << "\t(c) Delete Entry\n";
+		  << "\t(c) Delete Entry\n"
+		  << "\t(d) Get First\n"
+		  << "\t(e) Get Last\n";
 	std::cin >> instruction;
 	switch(instruction) {
 			  //Prompts for a word, and then searches for it.
@@ -49,6 +51,12 @@ int main() {
 	    case 'c':	  std::cout << "Delete Entry: ";
 			  std::cin >> entry.word;
 			  dictionary.deleteEntry(to_upper(entry.word));
+			  break;
+			  //Getting the first entry
+	    case 'd':	  dictionary.getFirst();
+			  break;
+			  //Getting the last entry
+	    case 'e':	  dictionary.getLast();
 			  break;
 			  //Declares the entry invalid if none of the above.
             default:	  valid = false;
